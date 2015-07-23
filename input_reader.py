@@ -30,7 +30,7 @@ def read_tube_quotes():
         start_time = time.time()
         tube_quotes = []
         for row in train_reader:
-            tube = filter(lambda x: x.assembly_id == row['tube_assembly_id'], tubes)[0]
+            tube = next(x for x in tubes if x.assembly_id == row['tube_assembly_id'])
             tube_quotes.append(
                 TubeQuote(tube, row['supplier'], row['quote_date'], row['annual_usage'], row['cost'],
                           _get_quantity_(row)))

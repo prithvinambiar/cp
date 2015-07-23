@@ -15,11 +15,14 @@ def main():
     x_values = map(lambda x: float(x.quantity), tube_quotes)
     y_values = map(lambda x: float(x.tube.diameter), tube_quotes)
 
-    # plt.plot(y_values, x_values, 'ro')
-
     fig = plt.figure()
     ax = Axes3D(fig)
-    ax.plot(x_values, y_values, z_values, 'ro')
+    # ax.plot(xs=x_values, ys=y_values, zs=z_values, marker='o', ls='None')
+    ax.scatter3D(xs=x_values, ys=y_values, zs=z_values)
+    ax.set_xlabel('Quantity of Tubes Purchased')
+    ax.set_ylabel('Tube Diameter')
+    ax.set_zlabel('Tube Cost')
+
     plt.show()
 
 main()
