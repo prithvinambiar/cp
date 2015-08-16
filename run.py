@@ -1,28 +1,21 @@
-from input_reader import read_tube_quotes
-
 __author__ = 'prithvin'
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+
+import numpy as np
+from input_reader import read_tube_quotes
+from linear_reg import Predictor
 
 
-def main():
-    tube_quotes = read_tube_quotes()
-    tube_quotes = filter(lambda x: x.supplier == 'S-0041', tube_quotes)
+def run():
+    tube_quotes = filter(lambda x: x.supplier == 'S-0041', read_tube_quotes())
+    features = np.array(map(lambda x: x.features(), tube_quotes), dtype='float_')
+    output = np.array(map(lambda x: [x.cost], tube_quotes), dtype='float_')
+    predictor = Predictor(features, output)
+    predictor.fit()
 
-    print 'number of tubes ', len(tube_quotes)
-    z_values = map(lambda x: float(x.cost), tube_quotes)
-    x_values = map(lambda x: float(x.quantity), tube_quotes)
-    y_values = map(lambda x: float(x.tube.diameter), tube_quotes)
+    tube = tube_quotes[10]
+    print "predicting for assembly id ", tube.tube.assembly_id, ' with features ', tube.features()
+    print 'The million dollar prediction is ', predictor.predict(np.array(tube.features(), dtype='float'))
 
-    fig = plt.figure()
-    ax = Axes3D(fig)
-    # ax.plot(xs=x_values, ys=y_values, zs=z_values, marker='o', ls='None')
-    ax.scatter3D(xs=x_values, ys=y_values, zs=z_values)
-    ax.set_xlabel('Quantity of Tubes Purchased')
-    ax.set_ylabel('Tube Diameter')
-    ax.set_zlabel('Tube Cost')
-
-    plt.show()
 
 if __name__ == '__main__':
-    main()
+    run()

@@ -1,9 +1,8 @@
+__author__ = 'prithvin'
+
 import time
 
 from dateutil import parser
-
-
-__author__ = 'prithvin'
 
 
 class Tube:
@@ -18,14 +17,20 @@ class Tube:
 
 
 class TubeQuote:
-    def __init__(self, tube, supplier, quote_date, annual_usage, cost, quantity):
+    def __init__(self, tube, supplier, quote_date, annual_usage, cost, quantity, is_bracket_pricing):
         self.quantity = quantity
         self.cost = cost
         self.annual_usage = annual_usage
         self.quote_date = quote_date
         self.supplier = supplier
         self.tube = tube
+        self.is_bracket_pricing = is_bracket_pricing
 
     def quote_date(self):
         date = parser.parse(self.quote_date)
         return time.mktime(date.timetuple())
+
+    def features(self):
+        tube = self.tube
+        return [self.quantity, self.annual_usage, tube.bend_radius, tube.diameter, tube.length, tube.num_bends,
+                tube.wall, self.is_bracket_pricing, self.quantity ** 2, self.quantity ** 3, self.quantity ** 4]
