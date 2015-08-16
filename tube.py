@@ -1,3 +1,8 @@
+import time
+
+from dateutil import parser
+
+
 __author__ = 'prithvin'
 
 
@@ -20,3 +25,7 @@ class TubeQuote:
         self.quote_date = quote_date
         self.supplier = supplier
         self.tube = tube
+
+    def quote_date(self):
+        date = parser.parse(self.quote_date)
+        return time.mktime(date.timetuple())
